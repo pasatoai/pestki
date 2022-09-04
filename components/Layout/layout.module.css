@@ -1,0 +1,45 @@
+.bar {
+  position: absolute;
+  top: 0px;
+}
+
+.topBar {
+  composes: bar;
+  border-bottom: 2px solid var(--bar-border);
+  width: 100%;
+  height: var(--d-bar-dim);
+  left: 0px;
+}
+
+.rightBar {
+  composes: bar;
+  border-left: 2px solid var(--bar-border);
+  width: var(--d-bar-dim);
+  height: 100%;
+  right: 0px;
+}
+
+.page {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+.pageViolet {
+  --bar-border: var(--color-brown);
+  background: var(--color-violet);
+  color: var(--color-brown);
+}
+
+.pageWhite {
+  --bar-border: var(--color-violet);
+  background: var(--color-brown);
+  color: var(--color-violet);
+}
+
+.content {
+  position: relative;
+  top: var(--d-bar-dim);
+  width: calc(100% - var(--d-bar-dim));
+  height: calc(100% - var(--d-bar-dim));
+}
