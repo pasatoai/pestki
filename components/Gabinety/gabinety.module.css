@@ -1,0 +1,41 @@
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 10%;
+}
+
+.gabinety {
+  display: flex;
+  flex-basis: 200px;
+  flex-wrap: wrap;
+  gap: 25px;
+  flex-grow: 1;
+}
+
+.gabinet {
+  width: 200px;
+  height: 55px;
+  border: 2px solid var(--color-brown);
+  color: var(--color-brown);
+  background: transparent;
+  cursor: pointer;
+}
+
+.drImage {
+  flex-basis: 424px;
+  height: 600px;
+  background: red;
+  position: relative;
+}
+
+.beadsImage {
+  flex-basis: 113px;
+  height: 700px;
+  position: relative;
+}
+
+.gabinet:hover {
+  background: var(--color-orange);
+}

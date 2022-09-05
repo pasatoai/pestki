@@ -1,0 +1,17 @@
+.content {
+  padding-bottom: 0px;
+  padding-right: 0px;
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.girl {
+  position: relative;
+  height: 100%;
+  aspect-ratio: 1;
+}

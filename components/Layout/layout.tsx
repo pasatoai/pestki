@@ -13,19 +13,30 @@ function TopBar({ children }: BarProps) {
   return <div className={styles.topBar}>{children}</div>;
 }
 
-function Content({ children }: { children: React.ReactNode }) {
-  return <div className={styles.content}>{children}</div>;
+function Content({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const style = [styles.content].concat(className ? className : "").join(" ");
+
+  return <div className={style}>{children}</div>;
 }
 
 function Page({
   children,
   isViolet = false,
+  className,
 }: {
   children: React.ReactNode;
   isViolet?: boolean;
+  className?: string;
 }) {
   const style = [styles.page]
     .concat(isViolet ? styles.pageViolet : styles.pageWhite)
+    .concat(className ? className : "")
     .join(" ");
 
   return <div className={style}>{children}</div>;
