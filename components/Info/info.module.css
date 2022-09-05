@@ -2,12 +2,22 @@
   padding-bottom: 0px;
   padding-right: 0px;
   width: 100%;
+  overflow-x: hidden;
 }
 
 .container {
   display: flex;
   justify-content: space-between;
   height: 100%;
+  flex-grow: 1;
+}
+
+.infos {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 25px;
+  padding-right: 50px;
 }
 
 .girl {

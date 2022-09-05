@@ -1,0 +1,8 @@
+.pestka {
+  position: relative;
+  width: 100px;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
