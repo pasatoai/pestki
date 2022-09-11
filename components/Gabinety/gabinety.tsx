@@ -1,18 +1,24 @@
 import * as L from "../Layout/layout";
 import styles from "./gabinety.module.css";
 import Image from "next/image";
+import GabinetPage from "../../pages/gabinet/[city]";
+import Link from "next/link";
 
 const gabinety = [
-  "Kolukszki",
+  "Koluszki",
   "Krakow",
   "Bialystok",
-  "some",
-  "some,fmsefm",
-  "djfklsjfklsj",
+  "Radom",
+  "Torun",
+  "Bydgoszcz",
 ];
 
 function Gabinet({ city }: { city: string }) {
-  return <button className={styles.gabinet}></button>;
+  return (
+    <Link href={`/gabinet/${encodeURIComponent(city)}`}>
+      <button className={styles.gabinet}>{city}</button>
+    </Link>
+  );
 }
 
 export default function Gabinety() {
