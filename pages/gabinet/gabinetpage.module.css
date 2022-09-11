@@ -35,3 +35,13 @@
 .city {
   padding-left: 25px;
 }
+
+.subBlocks {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.padder {
+  padding-top: 25px;
+}
