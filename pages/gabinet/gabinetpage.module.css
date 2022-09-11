@@ -1,8 +1,32 @@
-.wrapper {
-  display: flex;
-  gap: 2px;
-  background: var(--color-brown);
+.topBar {
+  border: none;
 }
+.sectionsWrapper {
+  padding: 0px;
+  width: 100%;
+  background: inherit;
+}
+
+.section {
+  width: 100%;
+  height: calc(100vh - var(--d-bar-dim));
+  background: inherit;
+  border-top: 2px solid var(--color-brown);
+}
+
+.subSection {
+  padding: 25px;
+  height: 100%;
+  width: 50%;
+  display: inline-block;
+  float: left;
+}
+
+.subSection:nth-child(odd) {
+  width: calc(50% - 2px);
+  border-right: 2px solid var(--color-brown);
+}
+
 .kursor {
   rotate: 90deg;
   cursor: pointer;

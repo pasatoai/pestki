@@ -3,14 +3,17 @@ import styles from "./layout.module.css";
 
 interface BarProps {
   children?: React.ReactNode;
+  className?: string;
 }
 
 function RightBar({ children }: BarProps) {
   return <div className={styles.rightBar}>{children}</div>;
 }
 
-function TopBar({ children }: BarProps) {
-  return <div className={styles.topBar}>{children}</div>;
+function TopBar({ children, className }: BarProps) {
+  const style = [styles.topBar].concat(className ? className : "").join(" ");
+
+  return <div className={style}>{children}</div>;
 }
 
 function Content({

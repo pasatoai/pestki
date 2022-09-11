@@ -1,8 +1,8 @@
 import * as L from "../Layout/layout";
 import styles from "./gabinety.module.css";
 import Image from "next/image";
-import GabinetPage from "../../pages/gabinet/[city]";
 import Link from "next/link";
+import { useState } from "react";
 
 const gabinety = [
   "Koluszki",
