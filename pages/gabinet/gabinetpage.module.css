@@ -1,5 +1,14 @@
 .topBar {
   border: none;
+  display: flex;
+  justify-content: space-between;
+}
+.topBarLeft {
+  display: flex;
+  align-items: center;
+}
+.topBarLeft a {
+  height: 60px;
 }
 .sectionsWrapper {
   padding: 0px;
@@ -18,7 +27,9 @@
   padding: 25px;
   height: 100%;
   width: 50%;
-  display: inline-block;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
   float: left;
 }
 
@@ -32,11 +43,21 @@
   cursor: pointer;
 }
 
+.editBlock {
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
 .city {
   padding-left: 25px;
 }
 
 .subBlocks {
+  padding-left: 25px;
   display: flex;
   flex-direction: column;
   gap: 25px;
@@ -44,4 +65,10 @@
 
 .padder {
   padding-top: 25px;
+}
+
+.lekarzInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

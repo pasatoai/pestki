@@ -1,59 +1,109 @@
+import { ReadStream } from "fs";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { isErrored } from "stream";
+import Button from "../../components/Button/button";
 import * as L from "../../components/Layout/layout";
 import styles from "./gabinetpage.module.css";
 
 type Decoration = "underline" | "none" | "italic";
 
-type Block = { text: string; decoration: Decoration };
+type Block = { text: string; decoration: Decoration } | "spacer";
 
 // each section is two subscections
 
+type Lekarz = {
+  doctorKey: string;
+  name: string;
+  blocks: Block[];
+};
+
 type Section = {
-  key: number;
-  leftS: SubSection;
-  rightS: SubSection;
+  sectionKey: string;
+  name: string;
+  lekarze: Lekarz[];
 };
 
-type SubSection = {
-  name?: string;
-  blocks?: Block[];
-};
-
-function EditBlock({ isEdit, text, decoration }: { isEdit: boolean } & Block) {
-  return isEdit ? <input defaultValue={text} /> : <span>{text}</span>;
+function EditBlock({
+  text,
+  children,
+}: {
+  text: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className={styles.editBlock}>
+      {children}
+      <div>
+        <span>_</span>
+        <span>_</span>
+      </div>
+    </div>
+  );
 }
 
-function Block({ text, decoration, isEdit }: Block & { isEdit: boolean }) {
-  return isEdit ? <input defaultValue={text} type="text" /> : null;
+// funkcje
+// zmien nazwe sekcji
+// dodaj lekarza
+
+function Lekarz({
+  name,
+  blocks,
+  onLekarzRemove,
+}: {
+  name: string;
+  blocks: Block[];
+  onLekarzRemove: () => void;
+}) {
+  return (
+    <div className={styles.lekarz}>
+      <div className={styles.lekarzInfo}>
+        <span>{name}</span>
+        <button onClick={onLekarzRemove}>x</button>
+      </div>
+    </div>
+  );
 }
 
-function SubSection({ name, blocks }: SubSection) {
-  const [isEdit, setIsEdit] = useState(false);
+function Section({
+  name,
+  lekarze,
+  onSectionRemove,
+  onLekarzRemove,
+  onLekarzAdd,
+}: {
+  name: string;
+  lekarze: Lekarz[];
+  onSectionRemove: () => void;
+  onLekarzAdd: () => void;
+  onLekarzRemove: (doctorKey: string) => void;
+}) {
+  const [isEdit, setIsEdit] = useState(true);
+
+  const toggleEdit = () => setIsEdit((t) => !t);
 
   return (
     <div className={styles.subSection}>
-      <input className={styles.subName} defaultValue={name} type="text" />
-      <EditBlock
-        text={name || "Nowa sekcja"}
-        isEdit={isEdit}
-        decoration={"none"}
-      />
-      <p className={styles.padder} />
-      <section className={styles.subBlocks}>
-        {blocks?.map(({ text, decoration }) => (
-          <EditBlock
-            key={text}
-            text={text}
-            isEdit={isEdit}
-            decoration={decoration}
-          />
-        ))}
-        {isEdit && <button>Dodaj blok</button>}
-      </section>
+      <div className={styles.subSectionDivider}>
+        <h2>{name}</h2>
+        <p className={styles.padder} />
+        <section className={styles.subBlocks}>
+          {lekarze.map(({ name, blocks, doctorKey }) => (
+            <Lekarz
+              key={doctorKey}
+              name={name}
+              blocks={blocks}
+              onLekarzRemove={() => onLekarzRemove(doctorKey)}
+            />
+          ))}
+        </section>
+      </div>
+      <div className={styles.controls}>
+        <Button onClick={onSectionRemove} caption="Usun sekcje" />
+        <Button onClick={onLekarzAdd} caption="Dodaj lekarza" />
+      </div>
     </div>
   );
 }
@@ -61,50 +111,89 @@ function SubSection({ name, blocks }: SubSection) {
 function GabinetPage(x: any) {
   const { query } = useRouter();
 
-  const [sections, setSections] = useState<Section[]>([
-    {
-      key: Math.random(),
-      leftS: {
-        name: "Urofizjo",
-        blocks: [
-          { text: "Olek przeszlo", decoration: "italic" },
-          { text: "Olek to ja", decoration: "italic" },
-          { text: "doesit@gmail.com", decoration: "italic" },
-        ],
-      },
-      rightS: { name: "Urofizjo2", blocks: [] },
-    },
-    {
-      key: Math.random(),
-      leftS: { name: "Urofizjo", blocks: [] },
-      rightS: {},
-    },
-  ]);
+  const [isAdmin, _] = useState(true);
 
-  const onBlockAdded = (sectionKey: number, isLeftSub: boolean, b: Block) => {};
+  const [sections, setSections] = useState<Section[]>([]);
+
+  const onSectionRemove = (sectionKey: string) =>
+    setSections((s) => s.filter((d) => d.sectionKey !== sectionKey));
+
+  const onLekarzAdd = (sectionKey: string) => {
+    const name = window.prompt("Podaj nazwe lekarza");
+    if (!name) return;
+
+    const copy = [...sections];
+
+    copy.map((x) => {
+      if (x.sectionKey === sectionKey) {
+        x.lekarze = x.lekarze.concat({
+          name: name,
+          doctorKey: Math.random().toString(),
+          blocks: [],
+        });
+      }
+      return x;
+    });
+
+    setSections(copy);
+  };
+
+  const onLekarzRemove = (sectionKey: string, doctorKey: string) =>
+    setSections((s) =>
+      s.map((k) => {
+        if (k.sectionKey === sectionKey) {
+          k.lekarze = k.lekarze.filter((dr) => dr.doctorKey !== doctorKey);
+        }
+        return k;
+      })
+    );
+
+  const onSectionAdd = () => {
+    const name = window.prompt("Podaj nazwe sekcji");
+    if (!name) return;
+
+    setSections((s) =>
+      s.concat({
+        name: name,
+        lekarze: [],
+        sectionKey: Math.random().toString(),
+      })
+    );
+  };
+
+  console.log(sections);
 
   return (
     <L.Page isViolet={true}>
       <L.TopBar className={styles.topBar}>
-        <Link href="/">
-          <a>
-            <Image
-              className={styles.kursor}
-              height="60px"
-              width="60px"
-              alt="Powrot"
-              src={"/images/kursor.svg"}
-            />
-          </a>
-        </Link>
-        <h1 className={styles.city}>{query.city}</h1>
+        <div className={styles.topBarLeft}>
+          <Link href="/">
+            <a>
+              <Image
+                className={styles.kursor}
+                height="60px"
+                width="60px"
+                alt="Powrot"
+                src={"/images/kursor.svg"}
+              />
+            </a>
+          </Link>
+          <h1 className={styles.city}>{query.city}</h1>
+        </div>
+        <Button caption="Dodaj sekcje" onClick={onSectionAdd} />
       </L.TopBar>
       <L.Content className={styles.sectionsWrapper}>
-        {sections.map(({ key: sk, leftS, rightS }) => (
-          <div key={sk} className={styles.section}>
-            <SubSection name={leftS?.name} blocks={leftS?.blocks} />
-            <SubSection name={rightS?.name} blocks={rightS?.blocks} />
-          </div>
+        {sections.map(({ name, lekarze, sectionKey }) => (
+          <Section
+            key={sectionKey}
+            name={name}
+            lekarze={lekarze}
+            onSectionRemove={() => onSectionRemove(sectionKey)}
+            onLekarzAdd={() => onLekarzAdd(sectionKey)}
+            onLekarzRemove={(doctorKey: string) =>
+              onLekarzRemove(sectionKey, doctorKey)
+            }
+          />
         ))}
       </L.Content>
     </L.Page>

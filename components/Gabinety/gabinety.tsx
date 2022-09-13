@@ -2,7 +2,7 @@ import * as L from "../Layout/layout";
 import styles from "./gabinety.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import Button from "../Button/button";
 
 const gabinety = [
   "Koluszki",
@@ -16,7 +16,9 @@ const gabinety = [
 function Gabinet({ city }: { city: string }) {
   return (
     <Link href={`/gabinet/${encodeURIComponent(city)}`}>
-      <button className={styles.gabinet}>{city}</button>
+      <a>
+        <Button caption={city} />
+      </a>
     </Link>
   );
 }
